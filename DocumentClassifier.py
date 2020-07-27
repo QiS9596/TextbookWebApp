@@ -61,9 +61,16 @@ class TFIDFDocumentClassifier(BaseDocumentClassifier):
     def predict(self, text):
         if self.classifier is None:
             raise TBAppExceptions.NotInitializedException
-        return self.classifier.predict(text)
+        return self.classifier.predict(self.count_vect.transform(text))
 
     def fit(self, text, target):
         word_counts = self.count_vect.fit_transform(text)
         self.TFIDF_matrix = self.tfidf_transformer.fit_transform(word_counts)
         self.classifier = MultinomialNB().fit(self.TFIDF_matrix, target)
+
+    def save(self, path):
+        raise NotImplementedError
+
+    @classmethod
+    def load(cls, path):
+        raise NotImplementedError
