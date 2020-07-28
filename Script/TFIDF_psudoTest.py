@@ -1,6 +1,8 @@
 import DocumentClassifier
 import os
 import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
 TF_IDF_classifier = DocumentClassifier.TFIDFDocumentClassifier()
 dataset_path = '../Data/701505'
 # create a dictionary to map classes to integer labels
@@ -24,12 +26,15 @@ for class_ in classes:
 
     strs += class_text
     labels += class_labels
+data_array = np.array([strs, labels]).transpose()
 
-TF_IDF_classifier.fit(strs, labels)
-result = TF_IDF_classifier.predict(strs)
-hit = 0
-for i in range(len(result)):
-    if result[i] == labels[i]:
-        hit += 1
+dataframe = pd.DataFrame(data=data_array, columns=['text', 'label'])
+dataframe = dataframe.sample(frac=1.0)
+strs = dataframe['text'].to_list()
+labels = dataframe['label'].to_list()
 
-print(float(hit)/float(len(result)))
+strs_train, strs_test, labels_train, labels_test = train_test_split(strs, labels, test_size=0.1)
+
+TF_IDF_classifier.fit(strs_train, labels_train)
+print(TF_IDF_classifier.eval(strs_train, labels_train))
+print(TF_IDF_classifier.eval(strs_test, labels_test))

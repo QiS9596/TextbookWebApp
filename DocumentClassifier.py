@@ -16,6 +16,7 @@ class BaseDocumentClassifier(ABC):
         """
         Predict the type of the document based on the input text
         The length of returned list will have the same length as the input list text
+        :raise TBAppExceptions.NotInitializedException if self.classifier is not initialized
         :param text: list of string; a list of text of the document to be classified
         :return: list of int; the predicted class
         """
@@ -50,6 +51,28 @@ class BaseDocumentClassifier(ABC):
         :param path: path to target file
         :return: a BaseDocumentClassifier object
         """
+
+    def eval(self, test_text, test_target, metrics=['acc']):
+        """
+        Perform evaluation on test data
+        Assertions: len(test_text) == len(test_target)
+        Supported metrics:
+            acc: prediction accuracy
+        :raise TBAppExceptions.NotInitializedException if self.classifier is not initialized
+        :param test_text: list of strings; each string is a text of the document to be classified
+        :param test_target: list of integers; each integer is a classification label for a document
+        :param metrics: list of strings; each string represent a evaluation metric
+        :return: a dictionary object, dictionary.keys() is same as metrics,
+        """
+        result = {}
+        predicted = self.predict(test_text)
+        if 'acc' in metrics:
+            correct = 0
+            for i in range(len(predicted)):
+                if predicted[i] == test_target[i]:
+                    correct += 1
+            result['acc'] = float(correct)/float(len(predicted))
+        return result
 
 class TFIDFDocumentClassifier(BaseDocumentClassifier):
     def __init__(self):
