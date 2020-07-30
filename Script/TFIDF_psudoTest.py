@@ -38,3 +38,7 @@ strs_train, strs_test, labels_train, labels_test = train_test_split(strs, labels
 TF_IDF_classifier.fit(strs_train, labels_train)
 print(TF_IDF_classifier.eval(strs_train, labels_train))
 print(TF_IDF_classifier.eval(strs_test, labels_test))
+
+TF_IDF_classifier.save('../temp/TF_IDF_MOCK_CLF.joblib', vpath='../temp/TF_IDF_MOCK_V.joblib')
+clf = DocumentClassifier.TFIDFDocumentClassifier.load('../temp/TF_IDF_MOCK_CLF.joblib', vpath='../temp/TF_IDF_MOCK_V.joblib')
+print(clf.eval(strs_test, labels_test))
