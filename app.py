@@ -50,15 +50,15 @@ if upload_method == 'File Uploader':
     if document_type is 'txt':
         document_file = uploaded_file
     if document_type is 'pdf':
-        # pdf = PDFParser(uploaded_file)
-        # document_obj = PDFDocument(pdf)
-        # rsrcmgr = PDFResourceManager()
-        # device = PDFRender(rsrcmgr)
-        # interpreter = PDFPageInterpreter(rsrcmgr, device)
-        # for page in PDFPage.create_pages(document_obj):
-        #     interpreter.process_page(page)
-        # st.write(device.str_text)
-        pass
+        pdf = PDFParser(uploaded_file)
+        document_obj = PDFDocument(pdf)
+        rsrcmgr = PDFResourceManager()
+        device = PDFRender(rsrcmgr)
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        for page in PDFPage.create_pages(document_obj):
+            interpreter.process_page(page)
+        st.write(device.str_text)
+
 
 
 
