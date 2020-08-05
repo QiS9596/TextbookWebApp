@@ -47,17 +47,20 @@ class PDFRender(TextConverter):
 if upload_method == 'File Uploader':
     document_type = st.sidebar.selectbox("Select file format", ('txt', 'pdf'))
     uploaded_file = st.file_uploader('Upload your document here', type=document_type)
-    if document_type is 'txt':
-        document_file = uploaded_file
-    if document_type is 'pdf':
-        pdf = PDFParser(uploaded_file)
-        document_obj = PDFDocument(pdf)
-        rsrcmgr = PDFResourceManager()
-        device = PDFRender(rsrcmgr)
-        interpreter = PDFPageInterpreter(rsrcmgr, device)
-        for page in PDFPage.create_pages(document_obj):
-            interpreter.process_page(page)
-        st.write(device.str_text)
+    if uploaded_file is not None:
+        if document_type is 'txt':
+            document_file = uploaded_file.getvalue()
+
+        if document_type is 'pdf':
+            pdf = PDFParser(uploaded_file)
+            document_obj = PDFDocument(pdf)
+            rsrcmgr = PDFResourceManager()
+            device = PDFRender(rsrcmgr)
+            interpreter = PDFPageInterpreter(rsrcmgr, device)
+            for page in PDFPage.create_pages(document_obj):
+                interpreter.process_page(page)
+            # st.write(device.str_text)
+            document_file = device.str_text
 
 
 

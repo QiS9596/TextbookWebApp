@@ -6,7 +6,7 @@ import TBAppExceptions
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from joblib import dump, load
-
+import streamlit as st
 
 class BaseDocumentClassifier(ABC):
     def __init__(self, classifier=None):
@@ -99,6 +99,7 @@ class TFIDFDocumentClassifier(SKLearnBasedDocumentClassifier):
             self.count_vect = count_vect
         self.tfidf_transformer = TfidfTransformer()
 
+    @st.cache
     def predict(self, text):
         if self.classifier is None:
             raise TBAppExceptions.NotInitializedException(
