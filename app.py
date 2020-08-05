@@ -65,8 +65,9 @@ else:
     document_file = st.text_area('Paste your text here')
 # st.write(type(uploaded_file))
 
-TFIDF_document_classifier = DocumentClassifier.TFIDFDocumentClassifier.load('./temp/TF_IDF_MOCK_CLF.joblib',
-                                                                            vpath='./temp/TF_IDF_MOCK_V.joblib')
+TFIDF_document_classifier = DocumentClassifier.TFIDFDocumentClassifier.load(
+    './model/TF_IDF_documentclassifier/TF_IDF_MOCK_CLF.joblib',
+    vpath='./model/TF_IDF_documentclassifier/TF_IDF_MOCK_V.joblib')
 mapping = {0: 'business',
            1: 'entertainment',
            2: 'food',
